@@ -1,0 +1,11 @@
+version: '3'
+services:
+  redis:
+    image: 'redislabs/redisearch:2.0.2'
+    ports:
+      - 6379:6379
+  ruby:
+    build:
+      context: "."
+    depends_on:
+      - redis
