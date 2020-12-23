@@ -14,7 +14,16 @@ Run the following commands to install using docker
 docker-compose build
 docker-compose up
 ```
-This would build and run the image, as well as add some seed data into Redis. (comprising of products)
+
+Then notice the console output carefully, as the startup script for docker container adds some seed data into redis, and performs
+some search operations as well. Have a look at files below to understand how the scripts work:
+
+```
+start.sh
+/scripts/create_schema.rb
+/scripts/add_product.rb
+/scripts/search_product.rb
+```
 
 ## Usage
 
