@@ -1,6 +1,9 @@
+require_relative '../string_extensions'
+
 module RediSearch
   class Document
-    using StringExtensions
+    using ::StringExtensions
+
     class << self
       # This class defines methods for searching and listing the records in redis
 
@@ -31,9 +34,9 @@ module RediSearch
       # rubocop:disable Metrics/ParameterLists
       def search(index_name:, term: nil, klass: nil, filters: {}, paging: {}, sort: {})
         command = build_query(index_name: index_name, term: term)
-        command = apply_filters(command: command, filters: filters) if filters.present?
-        command = apply_pagination(command: command, paging: paging) if paging.present?
-        command = apply_sorting(command: command, sort: sort) if sort.present?
+        command = apply_filters(command: command, filters: filters) unless filters.empty?
+        command = apply_pagination(command: command, paging: paging) unless paging.empty?
+        command = apply_sorting(command: command, sort: sort) unless sort.empty?
 
         parse_results(value: REDIS.call(command.split(' ')), klass: klass)
       end
@@ -43,7 +46,7 @@ module RediSearch
 
       def build_query(index_name:, term: nil)
         query = '*'
-        query.prepend(term.escape_special_characters) if term.present?
+        query.prepend(term.escape_special_characters) unless term.nil?
 
         "FT.SEARCH #{index_name} #{query}"
       end
@@ -75,7 +78,7 @@ module RediSearch
             .transform_keys!(&:to_sym)
             .merge(document_id: document_id)
 
-          record = klass.present? ? klass.new(record_attributes) : record_attributes
+          record = !klass.nil? ? klass.new(record_attributes) : record_attributes
           results << record
         end
 

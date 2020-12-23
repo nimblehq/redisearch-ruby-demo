@@ -9,3 +9,5 @@ services:
       context: "."
     depends_on:
       - redis
+    volumes:
+      - ".:/app:delegated"

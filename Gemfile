@@ -1,1 +1,3 @@
-gem 'redis-rb'
+source 'https://rubygems.org'
+
+gem 'redis'
