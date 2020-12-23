@@ -5,3 +5,5 @@ RUN apt-get update && gem install bundler
 COPY . .
 
 RUN bundle install
+
+CMD start.sh
